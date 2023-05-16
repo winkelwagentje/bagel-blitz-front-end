@@ -13,6 +13,8 @@ def main():
     board_batch = pyglet.graphics.Batch()
     pieces = pyglet.graphics.Batch()
 
+    window.set_caption("")
+
     BG = pyglet.shapes.Rectangle(0, 0, WINDOW_X, WINDOW_Y, (10, 100, 100), batch=background)
 
     board = Board(size=300, padding=50, batch=board_batch)
