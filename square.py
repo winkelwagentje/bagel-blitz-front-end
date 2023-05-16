@@ -5,6 +5,8 @@ import pyglet
 class Colour(Enum):
     BLACK = (155, 148, 120)
     WHITE = (245, 245, 245)
+    BLACK_SELECTED = (34,139,34)
+    WHITE_SELECTED = (144, 238, 144)
 
 
 class State(Enum):
@@ -35,3 +37,19 @@ class Square:
 
     def empty(self):
         self.content = None
+
+    def select(self):
+        self.state = State.SELECTED
+
+        if self.colour == Colour.WHITE:
+            self.shape_object.color = Colour.WHITE_SELECTED.value
+        else:
+            self.shape_object.color = Colour.BLACK_SELECTED.value
+
+    def deselect(self):
+        self.state = State.IDLE
+
+        if self.colour == Colour.WHITE:
+            self.shape_object.color = Colour.WHITE.value
+        else:
+            self.shape_object.color = Colour.BLACK.value

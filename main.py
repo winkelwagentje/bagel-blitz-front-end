@@ -20,11 +20,16 @@ def main():
 
     def update(dt):
         # Game logic and update code goes here
-        print("Game update")
+        #print("Game update")
+        pass
 
     @window.event
     def on_mouse_press(x, y, button, modifiers):
         move_test(x, y, button, modifiers, board, pion)
+        if board.is_selected() and board.get_selected_square().content is not None:
+            print("MOVE")
+        else:
+            select_square(x, y, button, modifiers, board)
 
     @window.event
     def on_draw():

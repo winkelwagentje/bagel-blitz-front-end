@@ -1,6 +1,6 @@
 import pyglet
 import math
-from square import Square
+from square import Square, State
 
 
 def determine_colour(i, j):
@@ -46,4 +46,20 @@ class Board:
         return -1, -1  # an invalid position
 
     def get_square(self, rel_x, rel_y):
-        return self.board_squares[rel_x*8 + rel_y]
+        return self.board_squares[rel_x * 8 + rel_y]
+
+    def get_selected_square(self):
+        for square in self.board_squares:
+            if square.state == State.SELECTED:
+                return square
+        return None
+
+    def is_selected(self):
+        for square in self.board_squares:
+            if square.state == State.SELECTED:
+                return True
+        return False
+
+    def deselect(self):
+        for square in self.board_squares:
+            square.deselect()
