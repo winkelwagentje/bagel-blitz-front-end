@@ -10,6 +10,8 @@ class Piece:
         self.color = color
         self.image_obj = self.load(pieces, board)
 
+        board.get_square(x, y).set_piece(self)
+
     def __repr__(self):
         return f'x: {self.x}, y: {self.y}, img:{self.img_path}'
 
@@ -24,5 +26,12 @@ class Piece:
         return sprite
 
     def move(self, new_x, new_y, board):
+        board.get_square(self.x, self.y).empty()
+
+        self.x = new_x
+        self.y = new_y
+
         self.image_obj.x = board.get_abs_x(new_x)
         self.image_obj.y = board.get_abs_y(new_y)
+
+        board.get_square(self.x, self.y).set_piece(self)

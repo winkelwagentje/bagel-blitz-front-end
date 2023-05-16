@@ -16,7 +16,7 @@ def main():
     BG = pyglet.shapes.Rectangle(0, 0, WINDOW_X, WINDOW_Y, (10, 100, 100), batch=background)
 
     board = Board(size=300, padding=50, batch=board_batch)
-    pion = Piece(1, 1, "venv/images/BlackPawn.png", "gendrik", "Black", pieces, board)
+    pion = Piece(1, 1, "images/BlackPawn.png", "gendrik", "Black", pieces, board)
 
     def update(dt):
         # Game logic and update code goes here

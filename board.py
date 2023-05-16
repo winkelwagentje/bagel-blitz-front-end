@@ -1,5 +1,6 @@
 import pyglet
 import math
+from square import Square
 
 
 def determine_colour(i, j):
@@ -11,13 +12,11 @@ def determine_colour(i, j):
     return WHITE
 
 
-def squares(size, padding, batch):
+def squares(size, padding, board):
     list = []
     for i in range(8):
         for j in range(8):
-            list.append(pyglet.shapes.Rectangle(i * size / 8 + padding, j * size / 8 + padding,
-                                                size / 8, size / 8, determine_colour(i, j),
-                                                batch=batch))
+            list.append(Square(i, j, board))
 
     return list
 
@@ -26,7 +25,8 @@ class Board:
     def __init__(self, size, padding, batch):
         self.size = size
         self.padding = padding
-        self.board_squares = squares(size, padding, batch)
+        self.batch = batch
+        self.board_squares = squares(size, padding, self)
 
     def get_square_size(self):
         return self.size / 8
@@ -37,10 +37,13 @@ class Board:
     def get_abs_y(self, rel_y):
         return self.padding + self.size / 8 * rel_y
 
-    def get_square(self, x, y):
+    def get_board_coordinates(self, x, y):
         rel_x = math.floor((x - self.padding) / self.get_square_size())
         rel_y = math.floor((y - self.padding) / self.get_square_size())
 
         if 0 <= rel_x <= 7 and 0 <= rel_y <= 7:
             return rel_x, rel_y
         return -1, -1  # an invalid position
+
+    def get_square(self, rel_x, rel_y):
+        return self.board_squares[rel_x*8 + rel_y]
