@@ -20,18 +20,25 @@ def main():
     board = Board(size=300, padding=50, batch=board_batch)
     pion = Piece(1, 1, "images/BlackPawn.png", "gendrik", "Black", pieces, board)
 
+    request({"move": [-1, -1]})
+
     def update(dt):
-        # Game logic and update code goes here
-        #print("Game update")
-        pass
+        new_board = listen()
+
+        if new_board["Updated"] == 1:
+            print("Board is updated")
+            board.update(new_board["layout"])
+            clear_local_JSON()
 
     @window.event
     def on_mouse_press(x, y, button, modifiers):
-        move_test(x, y, button, modifiers, board, pion)
-        if board.is_selected() and board.get_selected_square().content is not None:
-            print("MOVE")
+        if area(x, y, board) == Field.BOARD:
+            if board.is_selected() and board.get_selected_square().content is not None:
+                move_request(board, board.get_selected_square().content, board.get_board_coordinates(x, y))
+            else:
+                board.get_board_coordinates(x, y).select()
         else:
-            select_square(x, y, button, modifiers, board)
+            board.deselect()
 
     @window.event
     def on_draw():
@@ -40,7 +47,7 @@ def main():
         board_batch.draw()
         pieces.draw()
 
-    pyglet.clock.schedule_interval(update, 1 / 60.0)
+    pyglet.clock.schedule_interval(update, 1 / 1.0)
     pyglet.app.run()
 
 

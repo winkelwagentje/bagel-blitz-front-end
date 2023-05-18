@@ -22,11 +22,12 @@ def squares(size, padding, board):
 
 
 class Board:
-    def __init__(self, size, padding, batch):
+    def __init__(self, size, padding, batch, history=""):
         self.size = size
         self.padding = padding
         self.batch = batch
         self.board_squares = squares(size, padding, self)
+        self.history = history
 
     def get_square_size(self):
         return self.size / 8
@@ -63,3 +64,9 @@ class Board:
     def deselect(self):
         for square in self.board_squares:
             square.deselect()
+
+    def update(self, layout):
+        pass
+
+    def layout(self):
+        pass
