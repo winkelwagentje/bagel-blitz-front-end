@@ -9,14 +9,14 @@ def listen():
 
 def request(info):
     json_info = json.dumps(info)
-    filename = "F:/Documents/GitHub/bagel-blitz-front-end/java back end test/python-output.json"
+    filename = "java back end test/python-output.json"
     with open(filename, 'w') as file:
         file.write(json_info)
 
 
 def clear_local_JSON():
     json_info = json.dumps({"move-status": "NONE"})
-    filename = "F:/Documents/GitHub/bagel-blitz-front-end/java-output.json"
+    filename = "java-output.json"
     with open(filename, 'w') as file:
         file.write(json_info)
 
