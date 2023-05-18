@@ -1,6 +1,6 @@
 import pyglet
 import math
-from square import Square, State
+from square import Square, State, Colour
 from piece import Piece
 
 
@@ -30,6 +30,7 @@ class Board:
         self.board_squares = squares(size, padding, self)
         self.history = history
         self.pieces = []
+        self.colour_to_move = Colour.WHITE
 
 
     def get_square_size(self):
@@ -68,10 +69,15 @@ class Board:
         for square in self.board_squares:
             square.deselect()
 
-    def update(self, layout):
+    def update(self, layout, pieces):
         self.pieces = []
         for piece in layout:  # ['W', 'P', '0', '1']
-            self.pieces.append(Piece(int(piece[2]), int(piece[1]), f"images/{piece[0]}{piece[1]}.png", f"{piece[0]}{piece[1]}", ))
+            if piece[0] == "W":
+                colour = "White"
+            else:
+                colour = "Black"
+
+            self.pieces.append(Piece(int(piece[2]), int(piece[3]), f"images/{piece[0]}{piece[1]}.png", f"{piece[0]}{piece[1]}", colour, pieces, self))
 
     def layout(self):
         pass

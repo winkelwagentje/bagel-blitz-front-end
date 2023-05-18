@@ -21,7 +21,7 @@ def select_square(x, y, button, modifiers, board):
     if (rel_x, rel_y) != (-1, -1):
         board.get_square(rel_x, rel_y).select()
 
-def area(board, x, y):
+def area(x, y, board):
     if board.padding <= x <= board.padding + board.size and board.padding <= y <= board.padding + board.size:
         return Field.BOARD
     return Field.OTHER

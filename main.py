@@ -3,31 +3,39 @@ from piece import Piece
 from board import Board
 from mouse_handler import *
 from json_handler import *
+from clock import Clock
+from square import Colour
 
 
 def main():
     WINDOW_X, WINDOW_Y = 600, 400
+    REFRESH_RATE = 1/1.0
 
     window = pyglet.window.Window(WINDOW_X, WINDOW_Y)
     background = pyglet.graphics.Batch()
     board_batch = pyglet.graphics.Batch()
     pieces = pyglet.graphics.Batch()
+    clock_batch = pyglet.graphics.Batch()
 
     window.set_caption("")
 
     BG = pyglet.shapes.Rectangle(0, 0, WINDOW_X, WINDOW_Y, (10, 100, 100), batch=background)
 
     board = Board(size=300, padding=50, batch=board_batch)
-    # pion = Piece(1, 1, "images/BlackPawn.png", "gendrik", "Black", pieces, board)
-
-    # request({"move": [-1, -1]})
+    clock_white = Clock(Colour.WHITE, clock_batch, WINDOW_X-50)
+    clock_black = Clock(Colour.BLACK, clock_batch, WINDOW_X-50)
 
     initial_board = listen()
 
-    board.update(initial_board["board-layout"])
+    board.update(initial_board["board-layout"], pieces)
 
     def update(dt):
         new_board = listen()
+
+        if board.colour_to_move == Colour.WHITE:
+            clock_white.subtract(REFRESH_RATE * 1000)
+        else:
+            clock_black.subtract(REFRESH_RATE * 1000)
 
         if new_board["updated"] == 1:
             print("Board is updated")
@@ -40,7 +48,9 @@ def main():
             if board.is_selected() and board.get_selected_square().content is not None:
                 move_request(board, board.get_selected_square().content, board.get_board_coordinates(x, y))
             else:
-                board.get_board_coordinates(x, y).select()
+                board.deselect()
+                a, b = board.get_board_coordinates(x, y)
+                board.get_square(a, b).select()
         else:
             board.deselect()
 
@@ -50,8 +60,9 @@ def main():
         background.draw()
         board_batch.draw()
         pieces.draw()
+        clock_batch.draw()
 
-    pyglet.clock.schedule_interval(update, 1 / 1.0)
+    pyglet.clock.schedule_interval(update, REFRESH_RATE)
     pyglet.app.run()
 
 
