@@ -18,16 +18,20 @@ def main():
     BG = pyglet.shapes.Rectangle(0, 0, WINDOW_X, WINDOW_Y, (10, 100, 100), batch=background)
 
     board = Board(size=300, padding=50, batch=board_batch)
-    pion = Piece(1, 1, "images/BlackPawn.png", "gendrik", "Black", pieces, board)
+    # pion = Piece(1, 1, "images/BlackPawn.png", "gendrik", "Black", pieces, board)
 
-    request({"move": [-1, -1]})
+    # request({"move": [-1, -1]})
+
+    initial_board = listen()
+
+    board.update(initial_board["board-layout"])
 
     def update(dt):
         new_board = listen()
 
-        if new_board["Updated"] == 1:
+        if new_board["updated"] == 1:
             print("Board is updated")
-            board.update(new_board["layout"])
+            board.update(new_board["board-layout"])
             clear_local_JSON()
 
     @window.event

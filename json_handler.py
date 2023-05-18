@@ -4,12 +4,12 @@ def listen():
     file = "java-output.json"
     Json = json.load(open(file))
     print(Json)
-    return Json["move-status"]
+    return Json
 
 
 def request(info):
     json_info = json.dumps(info)
-    filename = "C:/Users/dieks/IdeaProjects/JSONTEST/python-output.json"
+    filename = "F:/Documents/GitHub/bagel-blitz-front-end/java back end test/python-output.json"
     with open(filename, 'w') as file:
         file.write(json_info)
 

@@ -1,6 +1,7 @@
 import pyglet
 import math
 from square import Square, State
+from piece import Piece
 
 
 def determine_colour(i, j):
@@ -28,6 +29,8 @@ class Board:
         self.batch = batch
         self.board_squares = squares(size, padding, self)
         self.history = history
+        self.pieces = []
+
 
     def get_square_size(self):
         return self.size / 8
@@ -66,7 +69,9 @@ class Board:
             square.deselect()
 
     def update(self, layout):
-        pass
+        self.pieces = []
+        for piece in layout:  # ['W', 'P', '0', '1']
+            self.pieces.append(Piece(int(piece[2]), int(piece[1]), f"images/{piece[0]}{piece[1]}.png", f"{piece[0]}{piece[1]}", ))
 
     def layout(self):
         pass
