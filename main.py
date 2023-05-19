@@ -33,8 +33,8 @@ def main():
     STRT_LBL = pyglet.text.Label(text="PRESS any KEY to START", font_name='Arial', font_size=24, x=WINDOW_X / 2 - 100, y=50, batch=start_screen_batch)
 
     board = Board(size=300, padding=50, batch=board_batch)
-    clock_white = Clock(Colour.WHITE, clock_batch, WINDOW_X-50)
-    clock_black = Clock(Colour.BLACK, clock_batch, WINDOW_X-50)
+    clock_white = Clock(Colour.WHITE, clock_batch, WINDOW_X-150)
+    clock_black = Clock(Colour.BLACK, clock_batch, WINDOW_X-150)
 
     initial_board = listen()
 

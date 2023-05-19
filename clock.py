@@ -11,12 +11,26 @@ class Clock:
             y = 80
         else:
             y = 40
-
-        self.label = pyglet.text.Label(text=str(floor(time/1000)), font_name='Arial', font_size=36, x=x, y=y, batch=batch)
+        seconds = (self.time/1000) % 60
+        if seconds == 0:
+            seconds = "00"
+        else:
+            seconds = str(seconds)
+        self.label = pyglet.text.Label(text=str(floor(self.time/60_000)) + ":" + seconds,
+                                       font_name='Arial',
+                                       font_size=36,
+                                       x=x,
+                                       y=y,
+                                       batch=batch)
 
     def get_time(self):
         return self.time
 
     def subtract(self, amount):
         self.time -= amount
-        self.label.text = str(floor(self.time/1000))
+        seconds = (self.time/1000) % 60
+        if seconds == 0:
+            seconds = "00"
+        else:
+            seconds = str(seconds)
+        self.label.text = str(floor(self.time / 60_000)) + ":" + seconds
