@@ -28,9 +28,13 @@ class Clock:
 
     def subtract(self, amount):
         self.time -= amount
-        seconds = (self.time/1000) % 60
-        if seconds == 0:
-            seconds = "00"
+        if self.time/60_000 <= 0:
+            #out of time message; evaluate if it is a draw or if someone won.
+            pass
         else:
-            seconds = str(seconds)
-        self.label.text = str(floor(self.time / 60_000)) + ":" + seconds
+            seconds = (self.time/1000) % 60
+            if seconds == 0:
+                seconds = "00"
+            else:
+                seconds = str(seconds)
+            self.label.text = str(floor(self.time / 60_000)) + ":" + seconds
