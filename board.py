@@ -1,83 +1,72 @@
-import pyglet
-import math
-from square import Square, State, Colour
-from piece import Piece
+from math import floor
+from enumerators import SquareState
+from square import Square
+from piece import PieceGUI
 
 
-def determine_colour(i, j):
-    BLACK = (150, 75, 0)
-    WHITE = (245, 245, 245)
-
-    if (i + j) % 2 == 0:
-        return BLACK
-    return WHITE
-
-
-def squares(size, padding, board):
-    list = []
-    for i in range(8):
-        for j in range(8):
-            list.append(Square(i, j, board))
-
-    return list
+"""
+Board class stores and handles all the GUI of the board
+"""
 
 
 class Board:
-    def __init__(self, size, padding, batch, history=""):
+    def __init__(self, size, padding, batch, pieces):
         self.size = size
         self.padding = padding
         self.batch = batch
-        self.board_squares = squares(size, padding, self)
-        self.history = history
-        self.pieces = []
-        self.colour_to_move = Colour.WHITE
+        self.board_squares = self.create_squares(size, padding)
+        self.pieces = self.create_pieces(pieces)
 
+    def create_squares(self, size, padding):  # initializes all the UI squares of the board
+        list_of_squares = []
+        for i in range(8):
+            for j in range(8):
+                list_of_squares.append(Square(i, j, self.square_width(), self.padding, self.batch))
 
-    def get_square_size(self):
+        return list_of_squares
+
+    def create_pieces(self, pieces):  # initializes all the UI pieces of the game_state
+        list_of_pieces = []
+        for piece in pieces:
+            list_of_pieces.append(PieceGUI(piece.x, piece.y, piece.code, self.batch, self.square_width(), self))
+
+        return list_of_pieces
+
+    def square_width(self):  # returns the width of a square inside the board
         return self.size / 8
 
-    def get_abs_x(self, rel_x):
+    def get_abs_x(self, rel_x):  # converts x relative to the board to absolute coordinates
         return self.padding + self.size / 8 * rel_x
 
-    def get_abs_y(self, rel_y):
+    def get_abs_y(self, rel_y):  # converts y relative to the board to absolute coordinates
         return self.padding + self.size / 8 * rel_y
 
-    def get_board_coordinates(self, x, y):
-        rel_x = math.floor((x - self.padding) / self.get_square_size())
-        rel_y = math.floor((y - self.padding) / self.get_square_size())
+    def get_rel_xy(self, x, y):  # converts absolute x and y to x and y relative to the board
+        rel_x = floor((x - self.padding) / self.square_width())
+        rel_y = floor((y - self.padding) / self.square_width())
 
         if 0 <= rel_x <= 7 and 0 <= rel_y <= 7:
             return rel_x, rel_y
         return -1, -1  # an invalid position
 
-    def get_square(self, rel_x, rel_y):
+    def get_square(self, rel_x, rel_y):  # returns the square object at rel_x and rel_y
         return self.board_squares[rel_x * 8 + rel_y]
 
-    def get_selected_square(self):
+    def get_selected_square(self):  # returns the square object of the selected square
         for square in self.board_squares:
-            if square.state == State.SELECTED:
+            if square.state == SquareState.SELECTED:
                 return square
         return None
 
-    def is_selected(self):
+    def is_selected(self):  # returns true if the board is selected
         for square in self.board_squares:
-            if square.state == State.SELECTED:
+            if square.state == SquareState.SELECTED:
                 return True
         return False
 
-    def deselect(self):
+    def deselect(self):  # deselects the entire board
         for square in self.board_squares:
             square.deselect()
 
-    def update(self, layout, pieces):
-        self.pieces = []
-        for piece in layout:  # ['W', 'P', '0', '1']
-            if piece[0] == "W":
-                colour = "White"
-            else:
-                colour = "Black"
-
-            self.pieces.append(Piece(int(piece[2]), int(piece[3]), f"images/{piece[0]}{piece[1]}.png", f"{piece[0]}{piece[1]}", colour, pieces, self))
-
-    def layout(self):
+    def get_piece(self, square):  # returns the pieceGUI object of square
         pass

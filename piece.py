@@ -1,31 +1,32 @@
 import pyglet
 
 
-class Piece:
-    def __init__(self, x, y, img_path, name, color, pieces, board):
+"""
+PieceGUI class stores and handles all the GUI of a piece
+"""
+
+
+class PieceGUI:
+    def __init__(self, x, y, code, batch, size, board):
         self.x = x  # related to board
         self.y = y  # related to board
-        self.img_path = img_path
-        self.name = name
-        self.color = color
-        self.image_obj = self.load(pieces, board)
-
-        board.get_square(x, y).set_piece(self)
+        self.code = code
+        self.size = size
+        self.image_obj = self.load(batch, board)
 
     def __repr__(self):
-        return f'x: {self.x}, y: {self.y}, img:{self.img_path}'
+        return f'x: {self.x}, y: {self.y}, img:images/{self.code}.png'
 
-    def load(self, batch, board):
-        image = pyglet.image.load(self.img_path)
+    def load(self, batch, board):  # loads the sprite into the window
+        image = pyglet.image.load(f"images/{self.code}.png")
         sprite = pyglet.sprite.Sprite(image, batch=batch)
-        sprite.scale_x = board.get_square_size() / sprite.width
-        sprite.scale_y = board.get_square_size() / sprite.height
+        sprite.scale_x = self.size / sprite.width
+        sprite.scale_y = self.size / sprite.height
         sprite.x = board.get_abs_x(self.x)
         sprite.y = board.get_abs_y(self.y)
-        print("hi")
         return sprite
 
-    def move(self, new_x, new_y, board):
+    def move_to(self, new_x, new_y, board):  # moves the sprite to a new location
         board.get_square(self.x, self.y).empty()
 
         self.x = new_x
@@ -35,3 +36,15 @@ class Piece:
         self.image_obj.y = board.get_abs_y(new_y)
 
         board.get_square(self.x, self.y).set_piece(self)
+
+
+"""
+PieceLogic class stores and handles all the logic of a piece
+"""
+
+
+class PieceLogic:
+    def __init__(self, code, x, y):
+        self.code = code
+        self.x = x
+        self.y = y

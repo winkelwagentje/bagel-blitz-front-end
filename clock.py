@@ -1,13 +1,13 @@
 import pyglet
 from math import floor
-from square import Colour
+from enumerators import Color
 
 
 class Clock:
     def __init__(self, color, batch, x, time=60_000):
         self.color = color
         self.time = time  # milliseconds
-        if color == Colour.WHITE:
+        if color == Color.WHITE:
             y = 80
         else:
             y = 40
